@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete painting</title>
+</head>
+<body>
+<h1>Delete painting</h1>
+<h2>Are you sure?</h2>
+<p>
+    <a href="/paintings">Painting list</a>
+</p>
+<form th:action="@{/delete-painting}" th:object="${painting}" method="post">
+    <input th:type="hidden" name="id" th:field="*{id}">
+    <table>
+        <tr>
+            <td>Paint Code:</td>
+            <td th:text="${painting.codePain}"></td>
+        </tr>
+        <tr>
+            <td>Height:</td>
+            <td th:text="${painting.height}"></td>
+        </tr>
+        <tr>
+            <td>Weight:</td>
+            <td th:text="${painting.weight}"></td>
+        </tr>
+        <tr>
+            <td>Material:</td>
+            <td th:text="${painting.material}"></td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td th:text="${painting.description}"></td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td th:text="${painting.price}"></td>
+        </tr>
+        <tr>
+            <td>Category:</td>
+            <td th:text="${painting.category.name}"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Delete customer"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

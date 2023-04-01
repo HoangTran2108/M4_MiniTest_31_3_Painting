@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create painting</title>
+</head>
+<body>
+<h1>Create painting</h1>
+<p>
+    <a href="/paintings">Painting list</a>
+</p>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form th:action="@{/create-painting}" th:object="${painting}" method="post">
+    <table>
+        <tr>
+            <td>Paint Code:</td>
+            <td><input type="text" th:field="*{codePain}"/></td>
+        </tr>
+        <tr>
+            <td>Height:</td>
+            <td><input type="text" th:field="*{height}"/></td>
+        </tr>
+        <tr>
+            <td>Weight:</td>
+            <td>
+                <input type="text" th:field="*{weight}"/>
+            </td>
+        </tr>
+        <tr>
+            <th>Material</th>
+            <td>
+                <input type="text" th:field="*{material}"/>
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                <input type="text" th:field="*{description}"/>
+            </td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>
+                <input type="text" th:field="*{price}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Category:</td>
+            <td>
+                <select th:field="*{category}">
+                    <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Create painting"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
