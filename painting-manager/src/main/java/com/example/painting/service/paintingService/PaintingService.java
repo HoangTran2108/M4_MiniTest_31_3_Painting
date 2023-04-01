@@ -45,7 +45,7 @@ public class PaintingService implements IPaintingService{
     }
 
     @Override
-    public Page<Painting> findAllByCodePainContaining(String codePaint, Pageable pageable) {
-        return paintingRepository.findAllByCodePainContaining(codePaint, pageable);
+    public Page<Painting> findAllByCodePainContainingAndCategory(String codePaint, Category category, Pageable pageable){
+        return paintingRepository.findAllByCodePainContainingAndCategory(codePaint, category, pageable);
     }
 }

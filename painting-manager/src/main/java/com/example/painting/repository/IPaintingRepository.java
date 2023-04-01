@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPaintingRepository extends PagingAndSortingRepository<Painting, Long> {
     Iterable<Painting> findAllByCategory(Category category);
-    Page<Painting> findAllByCodePainContaining(String codePaint, Pageable pageable);
+    Page<Painting> findAllByCodePainContainingAndCategory(String codePaint, Category category, Pageable pageable);
 }

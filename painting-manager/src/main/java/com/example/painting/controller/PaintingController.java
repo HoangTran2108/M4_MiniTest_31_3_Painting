@@ -27,10 +27,11 @@ public class PaintingController {
 
 
     @GetMapping("/paintings")
-    public ModelAndView listCustomers(@RequestParam("search") Optional<String> search, Pageable pageable){
+    public ModelAndView listCustomers(@RequestParam("search1") Optional<String> search1,
+                                      @RequestParam("search2") Optional<Category> search2, Pageable pageable){
         Page<Painting> paintings;
-        if(search.isPresent()){
-            paintings = paintingService.findAllByCodePainContaining(search.get(), pageable);
+        if(search1.isPresent() || search2.isPresent()){
+            paintings = paintingService.findAllByCodePainContainingAndCategory(search1.get(), search2.get(), pageable);
         } else {
             paintings = paintingService.findAll(pageable);
         }
@@ -49,7 +50,7 @@ public class PaintingController {
     }
 
     @PostMapping("/create-painting")
-    public ModelAndView savePainting(@ModelAttribute("painting") Painting painting) {
+    public ModelAndView savePainting(Painting painting) {
         paintingService.save(painting);
         ModelAndView modelAndView = new ModelAndView("/painting/create");
         modelAndView.addObject("painting", new Painting());
@@ -71,7 +72,7 @@ public class PaintingController {
     }
 
     @PostMapping("/edit-painting")
-    public ModelAndView updateCustomer(@ModelAttribute("customer") Painting painting) {
+    public ModelAndView updateCustomer(Painting painting) {
         paintingService.save(painting);
         ModelAndView modelAndView = new ModelAndView("/painting/edit");
         modelAndView.addObject("painting", painting);
@@ -94,7 +95,7 @@ public class PaintingController {
     }
 
     @PostMapping("/delete-painting")
-    public String deleteCustomer(@ModelAttribute("customer") Painting painting) {
+    public String deleteCustomer(Painting painting) {
         paintingService.remove(painting.getId());
         return "redirect:paintings";
     }

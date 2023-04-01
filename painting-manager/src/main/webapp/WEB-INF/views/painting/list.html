@@ -9,8 +9,11 @@
 <a href="/categories">Category list</a>
 <h1>Paintings</h1>
 <form>
-    Search by paintCode:
-    <input name="search" type="text"/>
+    Search:
+    <input name="search1" type="text"/>
+    <select name="search2" th:object="${categories}">
+        <option th:each="c :${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+    </select>
     <input type="submit" value="Search"/>
 </form>
 <br/>

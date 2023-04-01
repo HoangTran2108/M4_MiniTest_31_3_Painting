@@ -9,5 +9,5 @@ import org.springframework.data.domain.Pageable;
 public interface IPaintingService extends IGeneralService<Painting> {
     Iterable<Painting> findAllByCategory(Category category);
     Page<Painting> findAll(Pageable pageable);
-    Page<Painting> findAllByCodePainContaining(String codePaint, Pageable pageable);
+    Page<Painting> findAllByCodePainContainingAndCategory(String codePaint, Category category, Pageable pageable);
 }
