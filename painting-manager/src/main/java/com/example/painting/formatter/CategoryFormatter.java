@@ -27,6 +27,5 @@ public class CategoryFormatter implements Formatter<Category> {
 
     @Override
     public String print(Category category, Locale locale) {
-        return category.getId() + category.getName();
-    }
+        return "[" + category.getId() + ", " + category.getName() + "]";    }
 }

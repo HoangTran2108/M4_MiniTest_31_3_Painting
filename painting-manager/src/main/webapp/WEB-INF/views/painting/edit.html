@@ -59,6 +59,15 @@
             </td>
         </tr>
         <tr>
+            <th>Image</th>
+            <td>
+                <input type="file" th:field="*{image}">
+            </td>
+            <td>
+                <img width="100" height="100" th:src="@{'/a/' + ${painting.image}}" alt="">
+            </td>
+        </tr>
+        <tr>
             <td></td>
             <td><input type="submit" value="Update painting"></td>
         </tr>

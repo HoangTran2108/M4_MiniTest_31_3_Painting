@@ -1,12 +1,7 @@
 package com.example.painting.model;
-import javax.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 
-
-@Entity
-@Table
-public class Painting {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+public class PaintingForm {
     private Long id;
     private String codePain;
     private String height;
@@ -14,26 +9,15 @@ public class Painting {
     private String material;
     private String description;
     private Double price;
-    private String image;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    private MultipartFile image;
     private Category category;
 
-    public Painting() {
+    public PaintingForm() {
     }
 
-    public Painting(String codePain, String height, String weight, String material, String description, Double price, String image) {
-        this.codePain = codePain;
-        this.height = height;
-        this.weight = weight;
-        this.material = material;
-        this.description = description;
-        this.price = price;
-        this.image = image;
-    }
-
-    public Painting(String codePain, String height, String weight, String material, String description, Double price, String image, Category category) {
+    public PaintingForm(Long id, String codePain, String height, String weight, String material, String description,
+                        Double price, MultipartFile image, Category category) {
+        this.id = id;
         this.codePain = codePain;
         this.height = height;
         this.weight = weight;
@@ -44,8 +28,8 @@ public class Painting {
         this.category = category;
     }
 
-    public Painting(Long id, String codePain, String height, String weight, String material, String description, Double price, String image, Category category) {
-        this.id = id;
+    public PaintingForm(String codePain, String height, String weight, String material, String description,
+                        Double price, MultipartFile image, Category category) {
         this.codePain = codePain;
         this.height = height;
         this.weight = weight;
@@ -112,11 +96,11 @@ public class Painting {
         this.price = price;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 
@@ -127,5 +111,4 @@ public class Painting {
     public void setCategory(Category category) {
         this.category = category;
     }
-
 }

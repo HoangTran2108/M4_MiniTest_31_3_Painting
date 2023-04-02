@@ -12,7 +12,7 @@
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/create-painting}" th:object="${painting}" method="post">
+<form th:action="@{/create-painting}" th:object="${painting}" method="post" enctype="multipart/form-data">
     <table>
         <tr>
             <td>Paint Code:</td>
@@ -20,13 +20,17 @@
         </tr>
         <tr>
             <td>Height:</td>
-            <td><input type="text" th:field="*{height}"/></td>
+            <td>
+                <input type="text" th:field="*{height}"/>
+            </td>
+            <td th:if="${#fields.hasErrors('height')}" th:errors="*{height}">Name Error</td>
         </tr>
         <tr>
             <td>Weight:</td>
             <td>
                 <input type="text" th:field="*{weight}"/>
             </td>
+            <td th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}">Name Error</td>
         </tr>
         <tr>
             <th>Material</th>
@@ -45,6 +49,7 @@
             <td>
                 <input type="text" th:field="*{price}"/>
             </td>
+            <td th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Name Error</td>
         </tr>
         <tr>
             <td>Category:</td>
@@ -52,6 +57,12 @@
                 <select th:field="*{category}">
                     <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
                 </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>
+                <input type="file" th:field="*{image}"/>
             </td>
         </tr>
         <tr>

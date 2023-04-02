@@ -1,23 +1,36 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Painting</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Paintings</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        table, tr, th, td {
+            border: 1px solid black;
+            padding: 5px 20px;
+            text-align: center;
+        }
+        body {
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-<a href="/create-painting">Create new painting</a>
-<a href="/categories">Category list</a>
-<h1>Paintings</h1>
+<div>
+    <a th:href="@{create-painting}">Create new painting</a>
+</div>
+<div>
+    <a th:href="@{/categories}">Go to category list</a>
+</div>
 <form>
-    Search:
     <input name="search1" type="text"/>
     <select name="search2" th:object="${categories}">
         <option th:each="c :${categories}" th:value="${c.id}" th:text="${c.name}"></option>
     </select>
-    <input type="submit" value="Search"/>
+    <button type="submit">search</button>
 </form>
-<br/>
-<table border="1">
+<table>
     <tr>
         <th>Code</th>
         <th>Height</th>
@@ -25,24 +38,28 @@
         <th>Material</th>
         <th>Description</th>
         <th>Price</th>
+        <th>Image</th>
         <th>Category</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
-    <th:block th:each="painting : ${paintings}">
-        <tr>
-            <td th:text="${painting.codePain}"></td>
-            <td th:text="${painting.height}"></td>
-            <td th:text="${painting.weight}"></td>
-            <td th:text="${painting.material}"></td>
-            <td th:text="${painting.description}"></td>
-            <td th:text="${painting.price}"></td>
-            <td th:if="${painting.category}" th:text="${painting.category.name}"></td>
-            <td th:unless="${painting.category}"></td>
-            <td><a th:href="@{/edit-painting/__${painting.id}__ }">Edit</a></td>
-            <td><a th:href="@{/delete-painting/__${painting.id}__ }">Delete</a></td>
-        </tr>
-    </th:block>
+    <tr th:each="p: ${paintings}">
+        <td th:text="${p.codePain}"></td>
+        <td th:text="${p.height}"></td>
+        <td th:text="${p.weight}"></td>
+        <td th:text="${p.material}"></td>
+        <td th:text="${p.description}"></td>
+        <td th:text="${p.price}"></td>
+        <td><img width="100" height="110" th:src="@{'/i/' + ${p.image}}" alt=""></td>
+        <td th:if="${p.category}" th:text="${p.category.name}"></td>
+        <td th:unless="${p.category}"></td>
+        <td>
+            <button><a th:href="@{/edit-painting/__${p.id}__ }">Edit</a></button>
+        </td>
+        <td>
+            <button><a th:href="@{/delete-painting/__${p.id}__ }">Delete</a></button>
+        </td>
+    </tr>
 </table>
 <div>
     <a th:href="@{'/paintings'(page=${paintings.number - 1})}" th:if="${paintings.hasPrevious()}">Previous</a>

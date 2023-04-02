@@ -1,14 +1,22 @@
 package com.example.painting.configuration;
 
 import com.example.painting.formatter.CategoryFormatter;
+import com.example.painting.model.PaintingForm;
 import com.example.painting.service.categoryService.CategoryService;
+import com.example.painting.service.categoryService.ICategoryService;
+import com.example.painting.service.paintingService.IPaintingService;
+import com.example.painting.service.paintingService.PaintingService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -23,7 +31,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -36,6 +46,7 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Properties;
@@ -46,7 +57,11 @@ import java.util.Properties;
 @EnableJpaRepositories("com.example.painting.repository")
 @ComponentScan("com.example.painting")
 @EnableSpringDataWebSupport
+@PropertySource("classpath:upload-image.properties")
 public class AppConfig implements WebMvcConfigurer, ApplicationContextAware, WebApplicationInitializer {
+
+    @Value("${file-image}")
+    private String uploadFile;
 
     private ApplicationContext applicationContext;
 
@@ -84,7 +99,7 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware, Web
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
-        resolver.setFallbackPageable(PageRequest.of(0, 10));
+        resolver.setFallbackPageable(PageRequest.of(0, 5));
         argumentResolvers.add(resolver);
     }
 
@@ -141,5 +156,39 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware, Web
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames("message");
+        return messageSource;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/i/**")
+                .addResourceLocations("file:" + uploadFile);
+
+    }
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver getResolver() throws IOException {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSizePerFile(999999999);
+        return resolver;
+    }
+    @Bean
+    public ICategoryService categoryService() {
+        return new CategoryService();
+    }
+
+    @Bean
+    public IPaintingService paintingService() {
+        return new PaintingService();
+    }
+
+    @Bean
+    public PaintingForm paintingForm(){
+        return new PaintingForm();
     }
 }
